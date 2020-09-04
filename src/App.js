@@ -7,6 +7,7 @@ const alanKey = process.env.REACT_APP_ALAN_API_KEY;
 
 export default function App() {
   const [newsArticles, setNewsArticles] = useState([]);
+  const [activeArticle, setActiveArticle ] = useState(-1)
   const classes = useStyles();
 
   useEffect(() => {
@@ -14,8 +15,10 @@ export default function App() {
       key: alanKey,
       onCommand: ({ command, articles }) => {
           if(command === 'newsHeadlines'){
-            console.log("articles ==>", articles)
+            setActiveArticle(-1)
             setNewsArticles(articles)
+          } else if(command === 'highlight'){
+            setActiveArticle( pervActiveArticle => pervActiveArticle + 1)
           }
       } 
 
@@ -27,7 +30,7 @@ export default function App() {
       <div className={classes.logoContainer}>
         <img src="https://alan.app/voice/images/previews/preview.jpg" className={classes.alanLogo}/>
       </div>
-      <NewsCards articles ={newsArticles} />
+      <NewsCards articles ={newsArticles} activeArticle={activeArticle} />
     </div>
   )
 }
